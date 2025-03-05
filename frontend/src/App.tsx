@@ -1,35 +1,63 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import data from './CollegeBasketballTeams.json';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+function Welcome() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <header>
+      <h1>Colleges in NCAA Basketball</h1>
+    </header>
+  );
 }
 
-export default App
+function TeamCard({
+  school,
+  mascot,
+  city,
+  state,
+}: {
+  school: string;
+  mascot: string;
+  city: string;
+  state: string;
+}) {
+  return (
+    <div className="team-card">
+      <h3>{school}</h3>
+      <p>Masoct: {mascot}</p>
+      <p>
+        Location: {city}, {state}
+      </p>
+    </div>
+  );
+}
+
+function TeamList() {
+  if (data && Array.isArray(data.teams)) {
+    return (
+      <div>
+        {data.teams.map((singleTeamCard) => (
+          <TeamCard
+            key={singleTeamCard.tid}
+            school={singleTeamCard.school}
+            mascot={singleTeamCard.name}
+            city={singleTeamCard.city}
+            state={singleTeamCard.state}
+          />
+        ))}
+      </div>
+    );
+  }
+
+  return <p>No data available or data format is incorrect.</p>;
+}
+
+function App() {
+  return (
+    <>
+      <Welcome />
+      <TeamList />
+    </>
+  );
+}
+
+export default App;
